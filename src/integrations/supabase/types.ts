@@ -14,7 +14,237 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      execucoes_exercicio: {
+        Row: {
+          concluido: boolean
+          concluido_em: string | null
+          execucao_treino_id: string
+          exercicio_id: string
+          id: string
+          series: Json
+        }
+        Insert: {
+          concluido?: boolean
+          concluido_em?: string | null
+          execucao_treino_id: string
+          exercicio_id: string
+          id?: string
+          series?: Json
+        }
+        Update: {
+          concluido?: boolean
+          concluido_em?: string | null
+          execucao_treino_id?: string
+          exercicio_id?: string
+          id?: string
+          series?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "execucoes_exercicio_execucao_treino_id_fkey"
+            columns: ["execucao_treino_id"]
+            isOneToOne: false
+            referencedRelation: "execucoes_treino"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "execucoes_exercicio_exercicio_id_fkey"
+            columns: ["exercicio_id"]
+            isOneToOne: false
+            referencedRelation: "exercicios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      execucoes_treino: {
+        Row: {
+          criado_em: string
+          data_fim: string | null
+          data_inicio: string
+          duracao_segundos: number | null
+          id: string
+          intensidade: number | null
+          status: Database["public"]["Enums"]["status_execucao"]
+          treino_id: string
+        }
+        Insert: {
+          criado_em?: string
+          data_fim?: string | null
+          data_inicio?: string
+          duracao_segundos?: number | null
+          id?: string
+          intensidade?: number | null
+          status?: Database["public"]["Enums"]["status_execucao"]
+          treino_id: string
+        }
+        Update: {
+          criado_em?: string
+          data_fim?: string | null
+          data_inicio?: string
+          duracao_segundos?: number | null
+          id?: string
+          intensidade?: number | null
+          status?: Database["public"]["Enums"]["status_execucao"]
+          treino_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "execucoes_treino_treino_id_fkey"
+            columns: ["treino_id"]
+            isOneToOne: false
+            referencedRelation: "treinos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exercicios: {
+        Row: {
+          ativo: boolean
+          atualizado_em: string
+          bi_set_grupo_id: string | null
+          carga_referencia_texto: string | null
+          criado_em: string
+          id: string
+          imagem_ilustrativa: boolean
+          imagem_url: string | null
+          intervalo_segundos: number | null
+          nome: string
+          observacao: string | null
+          ordem: number
+          orientacoes: string | null
+          repeticoes_texto: string | null
+          tipo_repeticao: Database["public"]["Enums"]["tipo_repeticao"]
+          treino_id: string
+          video_url: string | null
+        }
+        Insert: {
+          ativo?: boolean
+          atualizado_em?: string
+          bi_set_grupo_id?: string | null
+          carga_referencia_texto?: string | null
+          criado_em?: string
+          id?: string
+          imagem_ilustrativa?: boolean
+          imagem_url?: string | null
+          intervalo_segundos?: number | null
+          nome: string
+          observacao?: string | null
+          ordem: number
+          orientacoes?: string | null
+          repeticoes_texto?: string | null
+          tipo_repeticao?: Database["public"]["Enums"]["tipo_repeticao"]
+          treino_id: string
+          video_url?: string | null
+        }
+        Update: {
+          ativo?: boolean
+          atualizado_em?: string
+          bi_set_grupo_id?: string | null
+          carga_referencia_texto?: string | null
+          criado_em?: string
+          id?: string
+          imagem_ilustrativa?: boolean
+          imagem_url?: string | null
+          intervalo_segundos?: number | null
+          nome?: string
+          observacao?: string | null
+          ordem?: number
+          orientacoes?: string | null
+          repeticoes_texto?: string | null
+          tipo_repeticao?: Database["public"]["Enums"]["tipo_repeticao"]
+          treino_id?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exercicios_treino_id_fkey"
+            columns: ["treino_id"]
+            isOneToOne: false
+            referencedRelation: "treinos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pausas_execucao: {
+        Row: {
+          execucao_treino_id: string
+          id: string
+          pausado_em: string
+          retomado_em: string | null
+        }
+        Insert: {
+          execucao_treino_id: string
+          id?: string
+          pausado_em?: string
+          retomado_em?: string | null
+        }
+        Update: {
+          execucao_treino_id?: string
+          id?: string
+          pausado_em?: string
+          retomado_em?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pausas_execucao_execucao_treino_id_fkey"
+            columns: ["execucao_treino_id"]
+            isOneToOne: false
+            referencedRelation: "execucoes_treino"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      periodizacao_semanas: {
+        Row: {
+          esquema: string
+          id: string
+          semana: number
+        }
+        Insert: {
+          esquema: string
+          id?: string
+          semana: number
+        }
+        Update: {
+          esquema?: string
+          id?: string
+          semana?: number
+        }
+        Relationships: []
+      }
+      treinos: {
+        Row: {
+          ativo: boolean
+          atualizado_em: string
+          criado_em: string
+          id: string
+          letra: string
+          mes_referencia: string
+          nome: string
+          ordem: number
+        }
+        Insert: {
+          ativo?: boolean
+          atualizado_em?: string
+          criado_em?: string
+          id?: string
+          letra: string
+          mes_referencia: string
+          nome: string
+          ordem?: number
+        }
+        Update: {
+          ativo?: boolean
+          atualizado_em?: string
+          criado_em?: string
+          id?: string
+          letra?: string
+          mes_referencia?: string
+          nome?: string
+          ordem?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +253,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      status_execucao: "em_andamento" | "pausado" | "finalizado" | "cancelado"
+      tipo_repeticao: "periodizacao" | "fixo"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +381,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      status_execucao: ["em_andamento", "pausado", "finalizado", "cancelado"],
+      tipo_repeticao: ["periodizacao", "fixo"],
+    },
   },
 } as const
