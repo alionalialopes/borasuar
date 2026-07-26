@@ -9,10 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ImportarRouteImport } from './routes/importar'
+import { Route as CalendarioRouteImport } from './routes/calendario'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TreinoTreinoIdIndexRouteImport } from './routes/treino.$treinoId.index'
 import { Route as TreinoTreinoIdExecutarRouteImport } from './routes/treino.$treinoId.executar'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImportarRoute = ImportarRouteImport.update({
+  id: '/importar',
+  path: '/importar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarioRoute = CalendarioRouteImport.update({
+  id: '/calendario',
+  path: '/calendario',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,36 +49,88 @@ const TreinoTreinoIdExecutarRoute = TreinoTreinoIdExecutarRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/calendario': typeof CalendarioRoute
+  '/importar': typeof ImportarRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/treino/$treinoId/executar': typeof TreinoTreinoIdExecutarRoute
   '/treino/$treinoId/': typeof TreinoTreinoIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/calendario': typeof CalendarioRoute
+  '/importar': typeof ImportarRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/treino/$treinoId/executar': typeof TreinoTreinoIdExecutarRoute
   '/treino/$treinoId': typeof TreinoTreinoIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/calendario': typeof CalendarioRoute
+  '/importar': typeof ImportarRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/treino/$treinoId/executar': typeof TreinoTreinoIdExecutarRoute
   '/treino/$treinoId/': typeof TreinoTreinoIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/treino/$treinoId/executar' | '/treino/$treinoId/'
+  fullPaths:
+    | '/'
+    | '/calendario'
+    | '/importar'
+    | '/sitemap.xml'
+    | '/treino/$treinoId/executar'
+    | '/treino/$treinoId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/treino/$treinoId/executar' | '/treino/$treinoId'
-  id: '__root__' | '/' | '/treino/$treinoId/executar' | '/treino/$treinoId/'
+  to:
+    | '/'
+    | '/calendario'
+    | '/importar'
+    | '/sitemap.xml'
+    | '/treino/$treinoId/executar'
+    | '/treino/$treinoId'
+  id:
+    | '__root__'
+    | '/'
+    | '/calendario'
+    | '/importar'
+    | '/sitemap.xml'
+    | '/treino/$treinoId/executar'
+    | '/treino/$treinoId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CalendarioRoute: typeof CalendarioRoute
+  ImportarRoute: typeof ImportarRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TreinoTreinoIdExecutarRoute: typeof TreinoTreinoIdExecutarRoute
   TreinoTreinoIdIndexRoute: typeof TreinoTreinoIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/importar': {
+      id: '/importar'
+      path: '/importar'
+      fullPath: '/importar'
+      preLoaderRoute: typeof ImportarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendario': {
+      id: '/calendario'
+      path: '/calendario'
+      fullPath: '/calendario'
+      preLoaderRoute: typeof CalendarioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +157,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CalendarioRoute: CalendarioRoute,
+  ImportarRoute: ImportarRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TreinoTreinoIdExecutarRoute: TreinoTreinoIdExecutarRoute,
   TreinoTreinoIdIndexRoute: TreinoTreinoIdIndexRoute,
 }
