@@ -60,8 +60,10 @@ function CalendarioPage() {
             mode="single"
             selected={diaSelecionado}
             onSelect={(d) => d && porDia.has(chaveDia(d)) && setDiaSelecionado(d)}
-            locale={undefined}
+            locale={ptBR}
+            classNames={{ day: "p-0.5 align-top" }}
             className="pointer-events-auto w-full"
+
             components={{
               DayButton: ({ day, ...props }) => {
                 const sessoes = porDia.get(chaveDia(day.date)) ?? [];
