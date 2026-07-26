@@ -63,7 +63,7 @@ function CalendarioPage() {
             selected={diaSelecionado}
             onSelect={(d) => d && porDia.has(chaveDia(d)) && setDiaSelecionado(d)}
             locale={ptBR}
-            classNames={{ day: "p-0.5 align-top" }}
+            classNames={{ day: "relative w-full h-full p-0 text-center group/day aspect-square select-none" }}
             className="pointer-events-auto w-full"
 
             components={{
