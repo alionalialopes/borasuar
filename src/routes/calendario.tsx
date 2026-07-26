@@ -65,7 +65,7 @@ function CalendarioPage() {
             locale={ptBR}
             classNames={{
               day: "relative w-full h-full p-0 text-center group/day aspect-square select-none",
-              today: "rounded-lg ring-1 ring-accent/60",
+              today: "rounded-lg bg-transparent! text-foreground! ring-1 ring-accent/60",
             }}
 
             className="pointer-events-auto w-full"
