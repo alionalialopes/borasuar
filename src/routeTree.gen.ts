@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TreinoTreinoIdIndexRouteImport } from './routes/treino.$treinoId.index'
+import { Route as TreinoTreinoIdExecutarRouteImport } from './routes/treino.$treinoId.executar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const TreinoTreinoIdIndexRoute = TreinoTreinoIdIndexRouteImport.update({
   path: '/treino/$treinoId/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TreinoTreinoIdExecutarRoute = TreinoTreinoIdExecutarRouteImport.update({
+  id: '/treino/$treinoId/executar',
+  path: '/treino/$treinoId/executar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/treino/$treinoId/executar': typeof TreinoTreinoIdExecutarRoute
   '/treino/$treinoId/': typeof TreinoTreinoIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/treino/$treinoId/executar': typeof TreinoTreinoIdExecutarRoute
   '/treino/$treinoId': typeof TreinoTreinoIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/treino/$treinoId/executar': typeof TreinoTreinoIdExecutarRoute
   '/treino/$treinoId/': typeof TreinoTreinoIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/treino/$treinoId/'
+  fullPaths: '/' | '/treino/$treinoId/executar' | '/treino/$treinoId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/treino/$treinoId'
-  id: '__root__' | '/' | '/treino/$treinoId/'
+  to: '/' | '/treino/$treinoId/executar' | '/treino/$treinoId'
+  id: '__root__' | '/' | '/treino/$treinoId/executar' | '/treino/$treinoId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TreinoTreinoIdExecutarRoute: typeof TreinoTreinoIdExecutarRoute
   TreinoTreinoIdIndexRoute: typeof TreinoTreinoIdIndexRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TreinoTreinoIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/treino/$treinoId/executar': {
+      id: '/treino/$treinoId/executar'
+      path: '/treino/$treinoId/executar'
+      fullPath: '/treino/$treinoId/executar'
+      preLoaderRoute: typeof TreinoTreinoIdExecutarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TreinoTreinoIdExecutarRoute: TreinoTreinoIdExecutarRoute,
   TreinoTreinoIdIndexRoute: TreinoTreinoIdIndexRoute,
 }
 export const routeTree = rootRouteImport
