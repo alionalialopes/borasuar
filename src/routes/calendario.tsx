@@ -79,7 +79,7 @@ function CalendarioPage() {
                   <button
                     {...props}
                     onClick={() => sessoes.length && setDiaSelecionado(day.date)}
-                    className="flex size-full min-h-14 flex-col items-center justify-center gap-0.5 rounded-lg text-sm hover:bg-secondary data-[selected-single=true]:bg-primary/20"
+                    className="flex size-full min-h-16 flex-col items-center justify-center gap-0.5 rounded-lg py-1 text-sm hover:bg-secondary data-[selected-single=true]:bg-primary/20"
                   >
                     <span className={sessoes.length ? "font-semibold" : "text-muted-foreground"}>
                       {day.date.getDate()}
