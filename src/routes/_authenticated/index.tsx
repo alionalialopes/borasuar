@@ -31,6 +31,10 @@ export const Route = createFileRoute("/_authenticated/")({
 function Home() {
   const { data: treinos, isLoading } = useQuery(treinosQuery);
   const { data: emAberto } = useQuery(execucaoEmAbertoGlobalQuery);
+  const lista = treinos ?? [];
+  const ativos = lista.slice(0, 5);
+  const inativos = lista.slice(5);
+
 
   return (
     <AppShell>
