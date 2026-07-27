@@ -30,8 +30,9 @@ export const treinosQuery = queryOptions({
     const { data: treinos, error } = await supabase
       .from("treinos")
       .select("*")
-      .eq("ativo", true)
+      .order("criado_em", { ascending: false })
       .order("ordem");
+
     if (error) throw error;
 
     const { data: exercicios, error: e2 } = await supabase
