@@ -108,12 +108,15 @@ function ImportarPage() {
     mutationFn: async () => {
       if (!treinos) return;
       const userId = await idUsuarioAtual();
-      // Periodização: seed único (global), atualizado apenas se vier no arquivo.
+      // Periodização: individual por usuário, atualizada apenas se vier no arquivo.
       const periodizacao = treinos.find((t) => t.periodizacao.length)?.periodizacao ?? [];
       if (periodizacao.length) {
         await supabase
           .from("periodizacao_semanas")
-          .upsert(periodizacao, { onConflict: "semana" });
+          .upsert(
+            periodizacao.map((p) => ({ ...p, user_id: userId })),
+            { onConflict: "user_id,semana" },
+          );
       }
 
       for (const t of treinos) {
@@ -128,8 +131,9 @@ function ImportarPage() {
               ativo: true,
               user_id: userId,
             },
-            { onConflict: "letra,mes_referencia" },
+            { onConflict: "user_id,letra,mes_referencia" },
           )
+
           .select()
           .single();
         if (error) throw error;
