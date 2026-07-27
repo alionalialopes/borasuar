@@ -61,8 +61,10 @@ function AuthPage() {
           Entre com sua conta Google para acessar seus treinos e seu histórico.
         </p>
         <Button className="mt-6 w-full" onClick={entrar} disabled={carregando}>
+          <GoogleIcon className="size-4" />
           {carregando ? "Abrindo o Google…" : "Entrar com Google"}
         </Button>
+
       </Card>
     </div>
   );
