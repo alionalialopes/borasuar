@@ -33,12 +33,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { MidiaExercicio } from "@/components/midia-exercicio";
 import {
   execucaoAbertaQuery,
   idUsuarioAtual,
   segundosDecorridos,
   sessaoQuery,
   treinoQuery,
+  ultimasSeriesQuery,
   type Exercicio,
   type SerieRegistrada,
 } from "@/lib/dados";
