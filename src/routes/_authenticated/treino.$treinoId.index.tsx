@@ -159,16 +159,22 @@ function DetalheTreino() {
                   )}
                 </div>
 
-                {ex.carga_referencia_texto && (
+                {(ultimas?.[ex.id]?.texto || ex.carga_referencia_texto) && (
                   <div className="rounded-lg bg-background/50 p-3">
                     <p className="text-xs uppercase tracking-wide text-muted-foreground">
                       Última carga registrada
                     </p>
                     <p className="mt-1 whitespace-pre-wrap break-words text-sm">
-                      {ex.carga_referencia_texto}
+                      {ultimas?.[ex.id]?.texto ?? ex.carga_referencia_texto}
                     </p>
+                    {ultimas?.[ex.id] && ex.carga_referencia_texto && (
+                      <p className="mt-1 whitespace-pre-wrap break-words text-xs text-muted-foreground">
+                        Referência: {ex.carga_referencia_texto}
+                      </p>
+                    )}
                   </div>
                 )}
+
 
                 {(ex.orientacoes || ex.observacao) && (
                   <Accordion type="single" collapsible>
