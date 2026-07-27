@@ -22,6 +22,7 @@ export type Database = {
           exercicio_id: string
           id: string
           series: Json
+          user_id: string
         }
         Insert: {
           concluido?: boolean
@@ -30,6 +31,7 @@ export type Database = {
           exercicio_id: string
           id?: string
           series?: Json
+          user_id: string
         }
         Update: {
           concluido?: boolean
@@ -38,6 +40,7 @@ export type Database = {
           exercicio_id?: string
           id?: string
           series?: Json
+          user_id?: string
         }
         Relationships: [
           {
@@ -66,6 +69,7 @@ export type Database = {
           intensidade: number | null
           status: Database["public"]["Enums"]["status_execucao"]
           treino_id: string
+          user_id: string
         }
         Insert: {
           criado_em?: string
@@ -76,6 +80,7 @@ export type Database = {
           intensidade?: number | null
           status?: Database["public"]["Enums"]["status_execucao"]
           treino_id: string
+          user_id: string
         }
         Update: {
           criado_em?: string
@@ -86,6 +91,7 @@ export type Database = {
           intensidade?: number | null
           status?: Database["public"]["Enums"]["status_execucao"]
           treino_id?: string
+          user_id?: string
         }
         Relationships: [
           {
@@ -115,6 +121,7 @@ export type Database = {
           repeticoes_texto: string | null
           tipo_repeticao: Database["public"]["Enums"]["tipo_repeticao"]
           treino_id: string
+          user_id: string
           video_url: string | null
         }
         Insert: {
@@ -134,6 +141,7 @@ export type Database = {
           repeticoes_texto?: string | null
           tipo_repeticao?: Database["public"]["Enums"]["tipo_repeticao"]
           treino_id: string
+          user_id: string
           video_url?: string | null
         }
         Update: {
@@ -153,6 +161,7 @@ export type Database = {
           repeticoes_texto?: string | null
           tipo_repeticao?: Database["public"]["Enums"]["tipo_repeticao"]
           treino_id?: string
+          user_id?: string
           video_url?: string | null
         }
         Relationships: [
@@ -171,18 +180,21 @@ export type Database = {
           id: string
           pausado_em: string
           retomado_em: string | null
+          user_id: string
         }
         Insert: {
           execucao_treino_id: string
           id?: string
           pausado_em?: string
           retomado_em?: string | null
+          user_id: string
         }
         Update: {
           execucao_treino_id?: string
           id?: string
           pausado_em?: string
           retomado_em?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -199,16 +211,19 @@ export type Database = {
           esquema: string
           id: string
           semana: number
+          user_id: string
         }
         Insert: {
           esquema: string
           id?: string
           semana: number
+          user_id: string
         }
         Update: {
           esquema?: string
           id?: string
           semana?: number
+          user_id?: string
         }
         Relationships: []
       }
@@ -222,6 +237,7 @@ export type Database = {
           mes_referencia: string
           nome: string
           ordem: number
+          user_id: string
         }
         Insert: {
           ativo?: boolean
@@ -232,6 +248,7 @@ export type Database = {
           mes_referencia: string
           nome: string
           ordem?: number
+          user_id: string
         }
         Update: {
           ativo?: boolean
@@ -242,6 +259,7 @@ export type Database = {
           mes_referencia?: string
           nome?: string
           ordem?: number
+          user_id?: string
         }
         Relationships: []
       }

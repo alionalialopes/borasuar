@@ -10,102 +10,120 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ImportarRouteImport } from './routes/importar'
-import { Route as CalendarioRouteImport } from './routes/calendario'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as TreinoTreinoIdIndexRouteImport } from './routes/treino.$treinoId.index'
-import { Route as TreinoTreinoIdExecutarRouteImport } from './routes/treino.$treinoId.executar'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedImportarRouteImport } from './routes/_authenticated/importar'
+import { Route as AuthenticatedCalendarioRouteImport } from './routes/_authenticated/calendario'
+import { Route as AuthenticatedTreinoTreinoIdIndexRouteImport } from './routes/_authenticated/treino.$treinoId.index'
+import { Route as AuthenticatedTreinoTreinoIdExecutarRouteImport } from './routes/_authenticated/treino.$treinoId.executar'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ImportarRoute = ImportarRouteImport.update({
-  id: '/importar',
-  path: '/importar',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CalendarioRoute = CalendarioRouteImport.update({
-  id: '/calendario',
-  path: '/calendario',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const TreinoTreinoIdIndexRoute = TreinoTreinoIdIndexRouteImport.update({
-  id: '/treino/$treinoId/',
-  path: '/treino/$treinoId/',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedImportarRoute = AuthenticatedImportarRouteImport.update({
+  id: '/importar',
+  path: '/importar',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const TreinoTreinoIdExecutarRoute = TreinoTreinoIdExecutarRouteImport.update({
-  id: '/treino/$treinoId/executar',
-  path: '/treino/$treinoId/executar',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedCalendarioRoute = AuthenticatedCalendarioRouteImport.update({
+  id: '/calendario',
+  path: '/calendario',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTreinoTreinoIdIndexRoute =
+  AuthenticatedTreinoTreinoIdIndexRouteImport.update({
+    id: '/treino/$treinoId/',
+    path: '/treino/$treinoId/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTreinoTreinoIdExecutarRoute =
+  AuthenticatedTreinoTreinoIdExecutarRouteImport.update({
+    id: '/treino/$treinoId/executar',
+    path: '/treino/$treinoId/executar',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/calendario': typeof CalendarioRoute
-  '/importar': typeof ImportarRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/treino/$treinoId/executar': typeof TreinoTreinoIdExecutarRoute
-  '/treino/$treinoId/': typeof TreinoTreinoIdIndexRoute
+  '/calendario': typeof AuthenticatedCalendarioRoute
+  '/importar': typeof AuthenticatedImportarRoute
+  '/treino/$treinoId/executar': typeof AuthenticatedTreinoTreinoIdExecutarRoute
+  '/treino/$treinoId/': typeof AuthenticatedTreinoTreinoIdIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/calendario': typeof CalendarioRoute
-  '/importar': typeof ImportarRoute
+  '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/treino/$treinoId/executar': typeof TreinoTreinoIdExecutarRoute
-  '/treino/$treinoId': typeof TreinoTreinoIdIndexRoute
+  '/calendario': typeof AuthenticatedCalendarioRoute
+  '/importar': typeof AuthenticatedImportarRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/treino/$treinoId/executar': typeof AuthenticatedTreinoTreinoIdExecutarRoute
+  '/treino/$treinoId': typeof AuthenticatedTreinoTreinoIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/calendario': typeof CalendarioRoute
-  '/importar': typeof ImportarRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/treino/$treinoId/executar': typeof TreinoTreinoIdExecutarRoute
-  '/treino/$treinoId/': typeof TreinoTreinoIdIndexRoute
+  '/_authenticated/calendario': typeof AuthenticatedCalendarioRoute
+  '/_authenticated/importar': typeof AuthenticatedImportarRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/treino/$treinoId/executar': typeof AuthenticatedTreinoTreinoIdExecutarRoute
+  '/_authenticated/treino/$treinoId/': typeof AuthenticatedTreinoTreinoIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
+    | '/sitemap.xml'
     | '/calendario'
     | '/importar'
-    | '/sitemap.xml'
     | '/treino/$treinoId/executar'
     | '/treino/$treinoId/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
+    | '/auth'
+    | '/sitemap.xml'
     | '/calendario'
     | '/importar'
-    | '/sitemap.xml'
+    | '/'
     | '/treino/$treinoId/executar'
     | '/treino/$treinoId'
   id:
     | '__root__'
-    | '/'
-    | '/calendario'
-    | '/importar'
+    | '/_authenticated'
+    | '/auth'
     | '/sitemap.xml'
-    | '/treino/$treinoId/executar'
-    | '/treino/$treinoId/'
+    | '/_authenticated/calendario'
+    | '/_authenticated/importar'
+    | '/_authenticated/'
+    | '/_authenticated/treino/$treinoId/executar'
+    | '/_authenticated/treino/$treinoId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  CalendarioRoute: typeof CalendarioRoute
-  ImportarRoute: typeof ImportarRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  TreinoTreinoIdExecutarRoute: typeof TreinoTreinoIdExecutarRoute
-  TreinoTreinoIdIndexRoute: typeof TreinoTreinoIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -117,51 +135,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/importar': {
-      id: '/importar'
-      path: '/importar'
-      fullPath: '/importar'
-      preLoaderRoute: typeof ImportarRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/calendario': {
-      id: '/calendario'
-      path: '/calendario'
-      fullPath: '/calendario'
-      preLoaderRoute: typeof CalendarioRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_authenticated/': {
+      id: '/_authenticated/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/treino/$treinoId/': {
-      id: '/treino/$treinoId/'
+    '/_authenticated/importar': {
+      id: '/_authenticated/importar'
+      path: '/importar'
+      fullPath: '/importar'
+      preLoaderRoute: typeof AuthenticatedImportarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/calendario': {
+      id: '/_authenticated/calendario'
+      path: '/calendario'
+      fullPath: '/calendario'
+      preLoaderRoute: typeof AuthenticatedCalendarioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/treino/$treinoId/': {
+      id: '/_authenticated/treino/$treinoId/'
       path: '/treino/$treinoId'
       fullPath: '/treino/$treinoId/'
-      preLoaderRoute: typeof TreinoTreinoIdIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedTreinoTreinoIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/treino/$treinoId/executar': {
-      id: '/treino/$treinoId/executar'
+    '/_authenticated/treino/$treinoId/executar': {
+      id: '/_authenticated/treino/$treinoId/executar'
       path: '/treino/$treinoId/executar'
       fullPath: '/treino/$treinoId/executar'
-      preLoaderRoute: typeof TreinoTreinoIdExecutarRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedTreinoTreinoIdExecutarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCalendarioRoute: typeof AuthenticatedCalendarioRoute
+  AuthenticatedImportarRoute: typeof AuthenticatedImportarRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedTreinoTreinoIdExecutarRoute: typeof AuthenticatedTreinoTreinoIdExecutarRoute
+  AuthenticatedTreinoTreinoIdIndexRoute: typeof AuthenticatedTreinoTreinoIdIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCalendarioRoute: AuthenticatedCalendarioRoute,
+  AuthenticatedImportarRoute: AuthenticatedImportarRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedTreinoTreinoIdExecutarRoute:
+    AuthenticatedTreinoTreinoIdExecutarRoute,
+  AuthenticatedTreinoTreinoIdIndexRoute: AuthenticatedTreinoTreinoIdIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  CalendarioRoute: CalendarioRoute,
-  ImportarRoute: ImportarRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  TreinoTreinoIdExecutarRoute: TreinoTreinoIdExecutarRoute,
-  TreinoTreinoIdIndexRoute: TreinoTreinoIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

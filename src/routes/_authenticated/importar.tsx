@@ -10,9 +10,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
+import { idUsuarioAtual } from "@/lib/dados";
 import { parseTreinosMarkdown, resolverBiSets, type TreinoParseado } from "@/lib/markdown-parser";
 
-export const Route = createFileRoute("/importar")({
+export const Route = createFileRoute("/_authenticated/importar")({
   head: () => ({
     meta: [
       { title: "Importar treinos em Markdown — BoraSuar" },
@@ -106,12 +107,16 @@ function ImportarPage() {
   const importar = useMutation({
     mutationFn: async () => {
       if (!treinos) return;
-      // Periodização: seed único (global), atualizado apenas se vier no arquivo.
+      const userId = await idUsuarioAtual();
+      // Periodização: individual por usuário, atualizada apenas se vier no arquivo.
       const periodizacao = treinos.find((t) => t.periodizacao.length)?.periodizacao ?? [];
       if (periodizacao.length) {
         await supabase
           .from("periodizacao_semanas")
-          .upsert(periodizacao, { onConflict: "semana" });
+          .upsert(
+            periodizacao.map((p) => ({ ...p, user_id: userId })),
+            { onConflict: "user_id,semana" },
+          );
       }
 
       for (const t of treinos) {
@@ -124,9 +129,11 @@ function ImportarPage() {
               mes_referencia: t.mes_referencia,
               ordem: t.ordem,
               ativo: true,
+              user_id: userId,
             },
-            { onConflict: "letra,mes_referencia" },
+            { onConflict: "user_id,letra,mes_referencia" },
           )
+
           .select()
           .single();
         if (error) throw error;
@@ -147,6 +154,7 @@ function ImportarPage() {
           observacao: e.observacao,
           bi_set_grupo_id: grupos[e.ordem] ?? null,
           ativo: true,
+          user_id: userId,
         }));
 
         const { error: e2 } = await supabase

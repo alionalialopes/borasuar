@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { treinosQuery, execucaoEmAbertoGlobalQuery } from "@/lib/dados";
 import { intensidadeInfo } from "@/lib/intensidade";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
       { title: "BoraSuar — Seus treinos da academia" },

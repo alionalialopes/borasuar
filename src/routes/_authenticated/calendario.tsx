@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { historicoQuery } from "@/lib/dados";
 import { formatarDuracao, intensidadeInfo } from "@/lib/intensidade";
 
-export const Route = createFileRoute("/calendario")({
+export const Route = createFileRoute("/_authenticated/calendario")({
   head: () => ({
     meta: [
       { title: "Calendário de treinos — BoraSuar" },

@@ -35,16 +35,18 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import {
   execucaoAbertaQuery,
+  idUsuarioAtual,
   segundosDecorridos,
   sessaoQuery,
   treinoQuery,
   type Exercicio,
   type SerieRegistrada,
 } from "@/lib/dados";
+
 import { INTENSIDADES, formatarDuracao } from "@/lib/intensidade";
 import { TimerDescanso, pedirPermissaoNotificacao } from "@/components/timer-descanso";
 
-export const Route = createFileRoute("/treino/$treinoId/executar")({
+export const Route = createFileRoute("/_authenticated/treino/$treinoId/executar")({
   head: () => ({
     meta: [
       { title: "Executando treino — BoraSuar" },
@@ -89,7 +91,7 @@ function Executar() {
   const pausar = useMutation({
     mutationFn: async () => {
       if (!aberta) return;
-      await supabase.from("pausas_execucao").insert({ execucao_treino_id: aberta.id });
+      await supabase.from("pausas_execucao").insert({ execucao_treino_id: aberta.id, user_id: await idUsuarioAtual() });
       const { error } = await supabase
         .from("execucoes_treino")
         .update({ status: "pausado" })
@@ -126,6 +128,7 @@ function Executar() {
           exercicio_id: exercicioId,
           concluido,
           concluido_em: concluido ? new Date().toISOString() : null,
+          user_id: await idUsuarioAtual(),
         },
         { onConflict: "execucao_treino_id,exercicio_id" },
       );
@@ -142,6 +145,7 @@ function Executar() {
           execucao_treino_id: execucaoId,
           exercicio_id: exercicioId,
           series: series as unknown as never,
+          user_id: await idUsuarioAtual(),
         },
         { onConflict: "execucao_treino_id,exercicio_id" },
       );

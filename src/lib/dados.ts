@@ -16,6 +16,14 @@ export interface SerieRegistrada {
   observacao: string | null;
 }
 
+/** ID do usuário logado — todo registro criado pertence a ele. */
+export async function idUsuarioAtual(): Promise<string> {
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) throw new Error("Sessão expirada. Entre novamente.");
+  return data.user.id;
+}
+
+
 export const treinosQuery = queryOptions({
   queryKey: ["treinos"],
   queryFn: async () => {
