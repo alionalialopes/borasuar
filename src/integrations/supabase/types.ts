@@ -211,16 +211,19 @@ export type Database = {
           esquema: string
           id: string
           semana: number
+          user_id: string
         }
         Insert: {
           esquema: string
           id?: string
           semana: number
+          user_id: string
         }
         Update: {
           esquema?: string
           id?: string
           semana?: number
+          user_id?: string
         }
         Relationships: []
       }
