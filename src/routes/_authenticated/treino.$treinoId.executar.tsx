@@ -44,7 +44,7 @@ import {
 import { INTENSIDADES, formatarDuracao } from "@/lib/intensidade";
 import { TimerDescanso, pedirPermissaoNotificacao } from "@/components/timer-descanso";
 
-export const Route = createFileRoute("/treino/$treinoId/executar")({
+export const Route = createFileRoute("/_authenticated/treino/$treinoId/executar")({
   head: () => ({
     meta: [
       { title: "Executando treino — BoraSuar" },

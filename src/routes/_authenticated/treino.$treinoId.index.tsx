@@ -13,7 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { treinoQuery, periodizacaoQuery, execucaoAbertaQuery, type Exercicio } from "@/lib/dados";
 
-export const Route = createFileRoute("/treino/$treinoId/")({
+export const Route = createFileRoute("/_authenticated/treino/$treinoId/")({
   head: () => ({
     meta: [
       { title: "Detalhe do treino — BoraSuar" },

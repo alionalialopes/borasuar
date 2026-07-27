@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { parseTreinosMarkdown, resolverBiSets, type TreinoParseado } from "@/lib/markdown-parser";
 
-export const Route = createFileRoute("/importar")({
+export const Route = createFileRoute("/_authenticated/importar")({
   head: () => ({
     meta: [
       { title: "Importar treinos em Markdown — BoraSuar" },
