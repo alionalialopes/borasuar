@@ -108,11 +108,8 @@ function Home() {
   );
 }
 
-type TreinoLista = NonNullable<ReturnType<typeof useTreinos>>[number];
+type TreinoLista = Awaited<ReturnType<NonNullable<typeof treinosQuery.queryFn>>>[number];
 
-function useTreinos() {
-  return useQuery(treinosQuery).data;
-}
 
 function CardTreino({ treino: t, inativo }: { treino: TreinoLista; inativo?: boolean }) {
   const info = intensidadeInfo(t.ultimaExecucao?.intensidade);
