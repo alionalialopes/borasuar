@@ -159,6 +159,52 @@ export const historicoQuery = queryOptions({
   },
 });
 
+/** Formata séries no padrão "12 x 20kg / 10 x 22,5kg". */
+export function formatarSeries(series: SerieRegistrada[] | null | undefined) {
+  const lista = (series ?? []).filter(
+    (s) => s.repeticoes != null || s.carga_kg != null || s.carga_banda_kg != null,
+  );
+  if (!lista.length) return null;
+  return lista
+    .map((s) => {
+      const reps = s.repeticoes != null ? String(s.repeticoes) : "–";
+      const cargas: string[] = [];
+      if (s.carga_kg != null) cargas.push(`${s.carga_kg}kg`);
+      if (s.carga_banda_kg != null) cargas.push(`banda ${s.carga_banda_kg}kg`);
+      return cargas.length ? `${reps} x ${cargas.join(" + ")}` : `${reps} reps`;
+    })
+    .join(" / ");
+}
+
+/** Último conjunto de séries registrado (execuções finalizadas) por exercício do treino. */
+export function ultimasSeriesQuery(treinoId: string) {
+  return queryOptions({
+    queryKey: ["ultimas-series", treinoId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("execucoes_exercicio")
+        .select("exercicio_id, series, execucoes_treino!inner(treino_id, status, data_fim)")
+        .eq("execucoes_treino.treino_id", treinoId)
+        .eq("execucoes_treino.status", "finalizado");
+      if (error) throw error;
+
+      const mapa: Record<string, { texto: string; data: string | null }> = {};
+      const ordenado = [...(data ?? [])].sort((a, b) => {
+        const da = a.execucoes_treino?.data_fim ?? "";
+        const db = b.execucoes_treino?.data_fim ?? "";
+        return db.localeCompare(da);
+      });
+      for (const item of ordenado) {
+        if (mapa[item.exercicio_id]) continue;
+        const texto = formatarSeries(item.series as unknown as SerieRegistrada[]);
+        if (!texto) continue;
+        mapa[item.exercicio_id] = { texto, data: item.execucoes_treino?.data_fim ?? null };
+      }
+      return mapa;
+    },
+  });
+}
+
 export function segundosDecorridos(
   execucao: Pick<ExecucaoTreino, "data_inicio" | "data_fim" | "status">,
   pausas: Pick<Pausa, "pausado_em" | "retomado_em">[],
