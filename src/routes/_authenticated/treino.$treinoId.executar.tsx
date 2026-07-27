@@ -33,12 +33,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { MidiaExercicio } from "@/components/midia-exercicio";
 import {
   execucaoAbertaQuery,
   idUsuarioAtual,
   segundosDecorridos,
   sessaoQuery,
   treinoQuery,
+  ultimasSeriesQuery,
   type Exercicio,
   type SerieRegistrada,
 } from "@/lib/dados";
@@ -69,6 +72,7 @@ function Executar() {
   const { data: aberta, isLoading } = useQuery(execucaoAbertaQuery(treinoId));
   const execucaoId = aberta?.id ?? "";
   const { data: sessao } = useQuery({ ...sessaoQuery(execucaoId), enabled: !!execucaoId });
+  const { data: ultimas } = useQuery(ultimasSeriesQuery(treinoId));
 
   const [agora, setAgora] = useState(() => Date.now());
   const [dialogEncerrar, setDialogEncerrar] = useState(false);
@@ -187,6 +191,7 @@ function Executar() {
     onSuccess: () => {
       invalidar();
       queryClient.invalidateQueries({ queryKey: ["historico"] });
+      queryClient.invalidateQueries({ queryKey: ["ultimas-series"] });
       queryClient.invalidateQueries({ queryKey: ["treinos"] });
       toast.success("Treino finalizado! 💪");
       navigate({ to: "/calendario" });
@@ -306,6 +311,36 @@ function Executar() {
                 </div>
               </div>
 
+              <MidiaExercicio ex={ex} />
+
+              {(ultimas?.[ex.id]?.texto || ex.carga_referencia_texto) && (
+                <div className="rounded-lg bg-background/50 p-3">
+                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                    Última carga registrada
+                  </p>
+                  <p className="mt-1 whitespace-pre-wrap break-words text-sm">
+                    {ultimas?.[ex.id]?.texto ?? ex.carga_referencia_texto}
+                  </p>
+                  {ultimas?.[ex.id] && ex.carga_referencia_texto && (
+                    <p className="mt-1 whitespace-pre-wrap break-words text-xs text-muted-foreground">
+                      Referência: {ex.carga_referencia_texto}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {(ex.orientacoes || ex.observacao) && (
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="info" className="border-b-0">
+                    <AccordionTrigger className="py-2 text-sm">Orientações e observações</AccordionTrigger>
+                    <AccordionContent className="space-y-2 text-sm text-muted-foreground">
+                      {ex.orientacoes && <p>{ex.orientacoes}</p>}
+                      {ex.observacao && <p>{ex.observacao}</p>}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              )}
+
               {series.length > 0 && (
                 <>
                   <Separator />
@@ -320,6 +355,7 @@ function Executar() {
                   </ul>
                 </>
               )}
+
 
               <TimerDescanso
                 nomeExercicio={ex.nome}

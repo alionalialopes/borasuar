@@ -8,10 +8,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
-import { treinoQuery, periodizacaoQuery, execucaoAbertaQuery, idUsuarioAtual, type Exercicio } from "@/lib/dados";
+import { MidiaExercicio } from "@/components/midia-exercicio";
+import {
+  treinoQuery,
+  periodizacaoQuery,
+  execucaoAbertaQuery,
+  ultimasSeriesQuery,
+  idUsuarioAtual,
+} from "@/lib/dados";
 
 export const Route = createFileRoute("/_authenticated/treino/$treinoId/")({
   head: () => ({
@@ -25,34 +31,7 @@ export const Route = createFileRoute("/_authenticated/treino/$treinoId/")({
   component: DetalheTreino,
 });
 
-export function MidiaExercicio({ ex }: { ex: Exercicio }) {
-  if (!ex.video_url && !ex.imagem_url) return null;
-  return (
-    <div className="overflow-hidden rounded-xl border border-border/70">
-      <AspectRatio ratio={16 / 10}>
-        {ex.video_url ? (
-          /youtube|youtu\.be|vimeo/i.test(ex.video_url) ? (
-            <iframe
-              src={ex.video_url.replace("watch?v=", "embed/").replace("youtu.be/", "www.youtube.com/embed/")}
-              title={ex.nome}
-              allowFullScreen
-              className="size-full"
-            />
-          ) : (
-            <video src={ex.video_url} controls className="size-full object-cover" />
-          )
-        ) : (
-          <img
-            src={ex.imagem_url!}
-            alt={`Demonstração do exercício ${ex.nome}`}
-            loading="lazy"
-            className="size-full object-cover"
-          />
-        )}
-      </AspectRatio>
-    </div>
-  );
-}
+export { MidiaExercicio };
 
 function DetalheTreino() {
   const { treinoId } = Route.useParams();
@@ -61,6 +40,8 @@ function DetalheTreino() {
   const { data, isLoading } = useQuery(treinoQuery(treinoId));
   const { data: periodizacao } = useQuery(periodizacaoQuery);
   const { data: aberta } = useQuery(execucaoAbertaQuery(treinoId));
+  const { data: ultimas } = useQuery(ultimasSeriesQuery(treinoId));
+
 
   const iniciar = useMutation({
     mutationFn: async () => {
@@ -178,16 +159,22 @@ function DetalheTreino() {
                   )}
                 </div>
 
-                {ex.carga_referencia_texto && (
+                {(ultimas?.[ex.id]?.texto || ex.carga_referencia_texto) && (
                   <div className="rounded-lg bg-background/50 p-3">
                     <p className="text-xs uppercase tracking-wide text-muted-foreground">
                       Última carga registrada
                     </p>
                     <p className="mt-1 whitespace-pre-wrap break-words text-sm">
-                      {ex.carga_referencia_texto}
+                      {ultimas?.[ex.id]?.texto ?? ex.carga_referencia_texto}
                     </p>
+                    {ultimas?.[ex.id] && ex.carga_referencia_texto && (
+                      <p className="mt-1 whitespace-pre-wrap break-words text-xs text-muted-foreground">
+                        Referência: {ex.carga_referencia_texto}
+                      </p>
+                    )}
                   </div>
                 )}
+
 
                 {(ex.orientacoes || ex.observacao) && (
                   <Accordion type="single" collapsible>
