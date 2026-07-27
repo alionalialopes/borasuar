@@ -11,7 +11,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
-import { treinoQuery, periodizacaoQuery, execucaoAbertaQuery, type Exercicio } from "@/lib/dados";
+import { treinoQuery, periodizacaoQuery, execucaoAbertaQuery, idUsuarioAtual, type Exercicio } from "@/lib/dados";
 
 export const Route = createFileRoute("/_authenticated/treino/$treinoId/")({
   head: () => ({
@@ -74,9 +74,10 @@ function DetalheTreino() {
       if (existente) return existente;
       const { data: nova, error } = await supabase
         .from("execucoes_treino")
-        .insert({ treino_id: treinoId, status: "em_andamento" })
+        .insert({ treino_id: treinoId, status: "em_andamento", user_id: await idUsuarioAtual() })
         .select()
         .single();
+
       if (error) throw error;
       return nova;
     },

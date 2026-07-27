@@ -35,12 +35,14 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import {
   execucaoAbertaQuery,
+  idUsuarioAtual,
   segundosDecorridos,
   sessaoQuery,
   treinoQuery,
   type Exercicio,
   type SerieRegistrada,
 } from "@/lib/dados";
+
 import { INTENSIDADES, formatarDuracao } from "@/lib/intensidade";
 import { TimerDescanso, pedirPermissaoNotificacao } from "@/components/timer-descanso";
 
