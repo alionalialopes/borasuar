@@ -191,6 +191,7 @@ function Executar() {
     onSuccess: () => {
       invalidar();
       queryClient.invalidateQueries({ queryKey: ["historico"] });
+      queryClient.invalidateQueries({ queryKey: ["ultimas-series"] });
       queryClient.invalidateQueries({ queryKey: ["treinos"] });
       toast.success("Treino finalizado! 💪");
       navigate({ to: "/calendario" });
