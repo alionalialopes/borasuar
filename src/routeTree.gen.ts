@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedImportarRouteImport } from './routes/_authenticated/importar'
 import { Route as AuthenticatedCalendarioRouteImport } from './routes/_authenticated/calendario'
@@ -21,43 +23,54 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
-  id: '/_authenticated/',
-  path: '/',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedImportarRoute = AuthenticatedImportarRouteImport.update({
-  id: '/_authenticated/importar',
+  id: '/importar',
   path: '/importar',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedCalendarioRoute = AuthenticatedCalendarioRouteImport.update({
-  id: '/_authenticated/calendario',
+  id: '/calendario',
   path: '/calendario',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedTreinoTreinoIdIndexRoute =
   AuthenticatedTreinoTreinoIdIndexRouteImport.update({
-    id: '/_authenticated/treino/$treinoId/',
+    id: '/treino/$treinoId/',
     path: '/treino/$treinoId/',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedTreinoTreinoIdExecutarRoute =
   AuthenticatedTreinoTreinoIdExecutarRouteImport.update({
-    id: '/_authenticated/treino/$treinoId/executar',
+    id: '/treino/$treinoId/executar',
     path: '/treino/$treinoId/executar',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof AuthenticatedIndexRoute
+  '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/calendario': typeof AuthenticatedCalendarioRoute
   '/importar': typeof AuthenticatedImportarRoute
-  '/': typeof AuthenticatedIndexRoute
   '/treino/$treinoId/executar': typeof AuthenticatedTreinoTreinoIdExecutarRoute
   '/treino/$treinoId/': typeof AuthenticatedTreinoTreinoIdIndexRoute
 }
 export interface FileRoutesByTo {
+  '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/calendario': typeof AuthenticatedCalendarioRoute
   '/importar': typeof AuthenticatedImportarRoute
@@ -67,6 +80,8 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/calendario': typeof AuthenticatedCalendarioRoute
   '/_authenticated/importar': typeof AuthenticatedImportarRoute
@@ -77,14 +92,16 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
+    | '/auth'
     | '/sitemap.xml'
     | '/calendario'
     | '/importar'
-    | '/'
     | '/treino/$treinoId/executar'
     | '/treino/$treinoId/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/auth'
     | '/sitemap.xml'
     | '/calendario'
     | '/importar'
@@ -93,6 +110,8 @@ export interface FileRouteTypes {
     | '/treino/$treinoId'
   id:
     | '__root__'
+    | '/_authenticated'
+    | '/auth'
     | '/sitemap.xml'
     | '/_authenticated/calendario'
     | '/_authenticated/importar'
@@ -102,12 +121,9 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  AuthenticatedCalendarioRoute: typeof AuthenticatedCalendarioRoute
-  AuthenticatedImportarRoute: typeof AuthenticatedImportarRoute
-  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
-  AuthenticatedTreinoTreinoIdExecutarRoute: typeof AuthenticatedTreinoTreinoIdExecutarRoute
-  AuthenticatedTreinoTreinoIdIndexRoute: typeof AuthenticatedTreinoTreinoIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -119,52 +135,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/': {
       id: '/_authenticated/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/importar': {
       id: '/_authenticated/importar'
       path: '/importar'
       fullPath: '/importar'
       preLoaderRoute: typeof AuthenticatedImportarRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/calendario': {
       id: '/_authenticated/calendario'
       path: '/calendario'
       fullPath: '/calendario'
       preLoaderRoute: typeof AuthenticatedCalendarioRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/treino/$treinoId/': {
       id: '/_authenticated/treino/$treinoId/'
       path: '/treino/$treinoId'
       fullPath: '/treino/$treinoId/'
       preLoaderRoute: typeof AuthenticatedTreinoTreinoIdIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/treino/$treinoId/executar': {
       id: '/_authenticated/treino/$treinoId/executar'
       path: '/treino/$treinoId/executar'
       fullPath: '/treino/$treinoId/executar'
       preLoaderRoute: typeof AuthenticatedTreinoTreinoIdExecutarRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  SitemapDotxmlRoute: SitemapDotxmlRoute,
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCalendarioRoute: typeof AuthenticatedCalendarioRoute
+  AuthenticatedImportarRoute: typeof AuthenticatedImportarRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedTreinoTreinoIdExecutarRoute: typeof AuthenticatedTreinoTreinoIdExecutarRoute
+  AuthenticatedTreinoTreinoIdIndexRoute: typeof AuthenticatedTreinoTreinoIdIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCalendarioRoute: AuthenticatedCalendarioRoute,
   AuthenticatedImportarRoute: AuthenticatedImportarRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedTreinoTreinoIdExecutarRoute:
     AuthenticatedTreinoTreinoIdExecutarRoute,
   AuthenticatedTreinoTreinoIdIndexRoute: AuthenticatedTreinoTreinoIdIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
