@@ -72,6 +72,7 @@ function Executar() {
   const { data: aberta, isLoading } = useQuery(execucaoAbertaQuery(treinoId));
   const execucaoId = aberta?.id ?? "";
   const { data: sessao } = useQuery({ ...sessaoQuery(execucaoId), enabled: !!execucaoId });
+  const { data: ultimas } = useQuery(ultimasSeriesQuery(treinoId));
 
   const [agora, setAgora] = useState(() => Date.now());
   const [dialogEncerrar, setDialogEncerrar] = useState(false);
